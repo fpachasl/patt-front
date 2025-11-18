@@ -30,7 +30,7 @@ export default function AssignedProjects({ token }) {
 							<li key={project.id} className="flex justify-between items-center border-b pb-2">
 								<div>
 									<p className="font-medium">{project.name}</p>
-									<p className="text-sm text-muted-foreground">Estado: {project.state}</p>
+									<p className="text-sm text-muted-foreground">Estado: {project.project_state.name}</p>
 								</div>
 								<Link href={`/projects/${project.id}`} className="text-sm font-semibold text-blue-600 hover:underline">
 									Ver

@@ -6,6 +6,8 @@ import { AppSidebar } from "@/components/common/app-sidebar";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { Providers } from "@/lib/providers/providers";
+import { AuthGuard } from "@/components/security/AuthGuard";
+import { Toaster } from "sonner";
 
 export default function RootLayout({ children }) {
 	const pathname = usePathname();
@@ -19,11 +21,14 @@ export default function RootLayout({ children }) {
 				<body>
 					<Providers>
 						<SidebarProvider>
-							<AppSidebar />
-							<main className="flex-1 p-4">
-								<SidebarTrigger />
-								{children}
-							</main>
+							<AuthGuard>
+								<AppSidebar />
+								<main className="flex-1 p-4">
+									<SidebarTrigger />
+									{children}
+									<Toaster richColors />
+								</main>
+							</AuthGuard>
 						</SidebarProvider>
 					</Providers>
 				</body>

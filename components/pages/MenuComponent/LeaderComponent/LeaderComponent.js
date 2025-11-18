@@ -6,6 +6,7 @@ import { fetchDashboardData } from "@/lib/services/dashboard";
 import { useEffect, useState } from "react";
 import RecentActivity from "../RecentActivityComponent";
 import MetricsCard from "../MetricsCardComponent";
+import ReportsAdminLeader from "./ReportsAdminLeader";
 
 export default function LeaderComponent({ token, role }) {
 	const [dashboard, setDashboard] = useState(null);
@@ -64,12 +65,21 @@ export default function LeaderComponent({ token, role }) {
 				</Card>
 
 				{/* MenuChart que abarca dos columnas */}
-				<Card className="lg:col-span-2">
+				<Card className="lg:col-span-1">
 					<CardHeader>
 						<CardTitle>Progreso general de los proyectos</CardTitle>
 					</CardHeader>
 					<CardContent>
 						<MenuChart />
+					</CardContent>
+				</Card>
+
+				<Card>
+					<CardHeader>
+						<CardTitle>Reportes:</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<ReportsAdminLeader token={token} />
 					</CardContent>
 				</Card>
 			</div>

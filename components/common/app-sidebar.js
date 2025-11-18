@@ -19,6 +19,7 @@ import {
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 
 const items = [
 	{
@@ -38,17 +39,17 @@ const items = [
 	},
 	{
 		title: "Notificaciones",
-		url: "#",
+		url: "/notifications",
 		icon: Bell,
 	},
 	{
 		title: "Documentos",
-		url: "#",
+		url: "/documents",
 		icon: Files,
 	},
 	{
 		title: "Cerrar Sesión",
-		url: "#",
+		action: () => signOut({ callbackUrl: "/" }),
 		icon: LogOut,
 	},
 ];
@@ -59,20 +60,26 @@ export function AppSidebar() {
 			<SidebarContent>
 				<SidebarGroup>
 					<Link href={"/menu"} className="w-32 h-full m-2">
-						<img
-							src="/pattern-black.png"
-							alt="Pattern Black"
-						/>
+						<img src="/pattern-black.png" alt="Pattern Black" />
 					</Link>
 					<SidebarGroupContent>
 						<SidebarMenu>
 							{items.map((item) => (
-								<SidebarMenuItem key={item.title} className="mt-1">
+								<SidebarMenuItem key={item.title} className="mt-1 cursor-pointer">
 									<SidebarMenuButton asChild>
-										<a href={item.url}>
-											<item.icon />
-											<span className="text-base">{item.title}</span>
-										</a>
+										{item.url ? (
+											<Link href={item.url}>
+												<item.icon />
+												<span className="text-base">{item.title}</span>
+											</Link>
+										) : (
+											<button
+												onClick={item.action}
+												className="flex items-center gap-2 w-full text-left">
+												<item.icon />
+												<span className="text-base">{item.title}</span>
+											</button>
+										)}
 									</SidebarMenuButton>
 								</SidebarMenuItem>
 							))}

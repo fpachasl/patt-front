@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import {
 	fetchTaskDetail,
 	fetchTaskStates,
 	updateTaskState,
 } from "@/lib/services/tasks";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -26,6 +26,8 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import CommentSection from "../CommentsComponent";
+import { ChevronLeftIcon } from "lucide-react";
+import { toast } from "sonner";
 
 export default function TaskDetailComponent() {
 	const { data: session } = useSession();
@@ -33,7 +35,7 @@ export default function TaskDetailComponent() {
 	const token = session?.accessToken;
 	const [task, setTask] = useState(null);
 	const [taskStates, setTaskStates] = useState([]);
-
+	const router = useRouter();
 	useEffect(() => {
 		if (token && id) {
 			fetchTaskDetail(id, token).then(setTask).catch(console.error);
@@ -43,19 +45,17 @@ export default function TaskDetailComponent() {
 
 	const handleTaskStateChange = async (value) => {
 		if (value === task.task_state?.id.toString()) {
-			console.log(
-				"El estado seleccionado es el mismo que el actual. No se actualiza."
-			);
 			return;
 		}
 
 		try {
-			const res = await updateTaskState(id, value, token);
-
+			await updateTaskState(id, value, token);
+			toast.success("Estado actualizado correctamente");
+			console.log("toast lanzado");
 			const updated = await fetchTaskDetail(id, token);
-
 			setTask(updated);
 		} catch (err) {
+			toast.error("Error al actualizar tarea: " + err.message);
 			throw new Error(
 				error?.response?.data?.detail ||
 					"Error al actualizar el estado de la tarea"
@@ -67,7 +67,17 @@ export default function TaskDetailComponent() {
 
 	return (
 		<div className="p-6 space-y-6">
-			<h1 className="text-3xl font-bold">Detalle de Tarea</h1>
+			<div className="flex ">
+				<Button
+					onClick={() => router.push("/task")}
+					variant="secondary"
+					size="icon"
+					className="size-8 mr-5 cursor-pointer">
+					<ChevronLeftIcon />
+				</Button>
+				<h1 className="text-3xl font-bold">Detalle de Tarea</h1>
+			</div>
+
 			<Separator />
 
 			<Alert className="bg-muted border-l-4 border-primary">
