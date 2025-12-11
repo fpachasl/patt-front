@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BACKEND_BASE = "http://18.188.64.78/api";
+const BACKEND_BASE = "http://3.137.137.140/api";
 
 export async function GET(req, context) {
     return handleRequest("GET", req, await context.params);
