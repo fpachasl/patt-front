@@ -7,6 +7,7 @@ import {
 	User,
 	User2,
 	ChevronUp,
+	BookText,
 } from "lucide-react";
 
 import {
@@ -46,6 +47,11 @@ const items = [
 		title: "Documentos",
 		url: "/documents",
 		icon: Files,
+	},
+	{
+		title: "Consulta Documentos",
+		url: "/documents/consulta",
+		icon: BookText
 	},
 	{
 		title: "Cerrar Sesión",
